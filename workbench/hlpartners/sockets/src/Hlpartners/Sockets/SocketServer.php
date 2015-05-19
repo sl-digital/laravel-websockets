@@ -74,12 +74,10 @@ class SocketServer
 	//============================================================
 
 	public function run(){
-
 		$this->log("[SRVR] Starting Loop");
 		$this->ping = time() + 30;
 
 		while(true){
-
 			//Copy the current clients list
 			$read = $this->clients;
 			$write = array();
@@ -146,7 +144,6 @@ class SocketServer
 
 							//Close connection
 							socket_close($socket_new);
-
 						}
 					}
 				}
@@ -258,24 +255,24 @@ class SocketServer
 
 		//Check for a valid origin
 		if( !isset($headers['Origin']) || !in_array($headers['Origin'],$this->origins) ){
-            $origin = (isset($headers['Origin'])) ? $headers['Origin'] : "No-Origin";
-            $this->log('[SRVR] Access Denied : ' . $origin);
-            $this->sendHttpResponse($client_conn,401);
-            return false;
+            		$origin = (isset($headers['Origin'])) ? $headers['Origin'] : "No-Origin";
+            		$this->log('[SRVR] Access Denied : ' . $origin);
+            		$this->sendHttpResponse($client_conn,401);
+            		return false;
 		}
 
 		//Check for a valid WebSocket version
 		if( !isset($headers['Sec-WebSocket-Version']) || $headers['Sec-WebSocket-Version'] < 6 ){
-            $this->log('[SRVR] Unsupported WebSocket Version');
-            $this->sendHttpResponse($client_conn,501);
-            return false;
+            		$this->log('[SRVR] Unsupported WebSocket Version');
+            		$this->sendHttpResponse($client_conn,501);
+            		return false;
 		}
 
 		//Check for a valid WebSocket key
 		if( !isset($headers['Sec-WebSocket-Key']) || empty($headers['Sec-WebSocket-Key']) ){
 			$this->log('[SRVR] Unsupported WebSocket Version');
-            $this->sendHttpResponse($client_conn,501);
-            return false;
+            		$this->sendHttpResponse($client_conn,501);
+            		return false;
 		}
 
 		//WebSocket Accept Header
