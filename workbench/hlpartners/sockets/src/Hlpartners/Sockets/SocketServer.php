@@ -27,6 +27,7 @@ class SocketServer
 	private $ping;
 	private $container;
 
+	//List your IP or URLs here ie: 'http://1.1.1.1' or 'http://www.mysite.com'
 	private $origins = array();
 
 	//============================================================
@@ -38,7 +39,7 @@ class SocketServer
 	}
 
 	//============================================================
-	// Server Boot Up
+	// Server Boot Up - Change host to actual host IP
 	//============================================================
 
 	public function boot($host='127.0.0.1',$port='8888'){
@@ -103,7 +104,7 @@ class SocketServer
 						$this->clients[] = $socket_new;
 					
 						//Attempt to read from the socket
-						$header = @socket_read($socket_new, 1024);
+						$header = @socket_read($socket_new, 2048);
 
 						if($header !== FALSE){
 
@@ -185,7 +186,7 @@ class SocketServer
 
 		if($client !== $this->socket)
 		{
-			if( ($bytes = @socket_recv($client, $input, 1024, MSG_DONTWAIT)) > 0 ){
+			if( ($bytes = @socket_recv($client, $input, 2048, MSG_DONTWAIT)) > 0 ){
 				if(!empty($input)){
 					$buffer .= $input;
 				}
@@ -242,10 +243,10 @@ class SocketServer
 		//Check for a valid HTTP connection
 		if(!preg_match('/\AGET (\S+) HTTP\/1.1\z/', $lines[0], $matches))
 		{
-            $this->log('[SRVR] Invalid HTTP Request');
-            $this->sendHttpResponse($client_conn,400);
-            return false;
-        }
+            		$this->log('[SRVR] Invalid HTTP Request');
+            		$this->sendHttpResponse($client_conn,400);
+            		return false;
+        	}
 
 		//Copy over header information
 		foreach($lines as $line){
